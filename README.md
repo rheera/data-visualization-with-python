@@ -96,15 +96,15 @@ The dataset includes the following variables:
 
 ### Part 1 - Analyzing the wildfire activities in Australia
 
-- [ ] To understand the change in average estimated fire area over time using pandas to plot the line chart
-- [ ] To plot the estimated fire area over month
-- [ ] Use the functionality of seaborn to develop a barplot, to find the insights on the distribution of mean estimated fire brightness across the regions
-- [ ] Develop a pie chart and find the portion of count of pixels for presumed vegetation fires vary across regions
-- [ ] Customize the previous pie plot for a better visual representation
-- [ ] Use Matplotlib to develop a histogram of the mean estimated fire brightness
-- [ ] Use the functionality of seaborn and pass region as hue, to understand the distribution of estimated fire brightness across regions
-- [ ] Develop a scatter plot to find the correlation between mean estimated fire radiative power and mean confidence level
-- [ ] Mark all seven regions affected by wildfires, on the Map of Australia using Folium
+- [x] To understand the change in average estimated fire area over time using pandas to plot the line chart
+- [x] To plot the estimated fire area over month
+- [x] Use the functionality of seaborn to develop a barplot, to find the insights on the distribution of mean estimated fire brightness across the regions
+- [x] Develop a pie chart and find the portion of count of pixels for presumed vegetation fires vary across regions
+- [x] Customize the previous pie plot for a better visual representation
+- [x] Use Matplotlib to develop a histogram of the mean estimated fire brightness
+- [x] Use the functionality of seaborn and pass region as hue, to understand the distribution of estimated fire brightness across regions
+- [x] Develop a scatter plot to find the correlation between mean estimated fire radiative power and mean confidence level
+- [x] Mark all seven regions affected by wildfires, on the Map of Australia using Folium
 
 ### Part 2 - Dashboard to display charts based on selected Region and Year
 
