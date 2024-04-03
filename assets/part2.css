@@ -1,0 +1,20 @@
+.radio-btns {
+  & label {
+    display: block;
+    margin-left: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    color: #111827;
+
+    & input {
+      border-color: #d1d5db;
+      width: 1rem;
+      height: 1rem;
+      color: #4f46e5;
+      vertical-align: middle;
+      margin-right: 0.25rem;
+    }
+  }
+}

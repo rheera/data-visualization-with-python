@@ -32,7 +32,7 @@ For the final part, we are assuming the role of a data scientist at XYZAutomotiv
   - [Part 2 - Dashboard to display charts based on selected Region and Year](#part-2---dashboard-to-display-charts-based-on-selected-region-and-year)
   - [Part 3 - Analyzing the Impact of Recession on Automobile Sales](#part-3---analyzing-the-impact-of-recession-on-automobile-sales)
     - [Task 1 - Create visualizations using Matplotib, Seaborn & Folium](#task-1---create-visualizations-using-matplotib-seaborn--folium)
-    - [Task 2 - Create Dashboard using Plotly and Dash](#task-2---create-dashboard-using-plotly-and-dash)
+    - [Task 2 - Create a Dashboard using Plotly and Dash](#task-2---create-a-dashboard-using-plotly-and-dash)
 - [Stretch Goals](#stretch-goals)
 
 ## Data Description
@@ -91,6 +91,7 @@ The dataset includes the following variables:
 - [`folium`](https://python-visualization.github.io/folium/latest/) for geospatial data visualization such as choropleth maps.
 - [`plotly`](https://plotly.com/python/) for interactive plotting tools.
 - [`dash`](https://dash.plotly.com/) for dashboards.
+- [`tailwind`](https://tailwindcss.com/) to style dashboards.
 
 ## Deliverables
 
