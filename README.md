@@ -109,11 +109,11 @@ The dataset includes the following variables:
 
 ### Part 2 - Dashboard to display charts based on selected Region and Year
 
-- [ ] Add title to the dashboard
-- [ ] Add the radio items and a dropdown right below the first inner division
-- [ ] Add two empty divisions for output inside the next inner division
-- [ ] Add the Output and input components inside the app.callback decorator
-- [ ] Add the callback function
+- [x] Add title to the dashboard
+- [x] Add the radio items and a dropdown right below the first inner division
+- [x] Add two empty divisions for output inside the next inner division
+- [x] Add the Output and input components inside the app.callback decorator
+- [x] Add the callback function
 
 ### Part 3 - Analyzing the Impact of Recession on Automobile Sales
 
