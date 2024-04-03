@@ -30,7 +30,7 @@ app.layout = html.Div(
     children=[
         html.H1(
             "Australia Wildfire Dashboard",
-            className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl",
+            className="mt-8 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl",
         ),
         html.Div(
             [
@@ -79,7 +79,7 @@ app.layout = html.Div(
                                     ],
                                     "NSW",
                                     id="input-region",
-                                    className="flex items-center radio-btns",
+                                    className="flex items-center radio-btns flex-wrap",
                                     inline=True,
                                 )
                             ],
@@ -88,12 +88,13 @@ app.layout = html.Div(
                     ],
                     className="mt-4",
                 ),
-            ]
+            ],
+            className="mt-4",
         ),
         html.Div(
             [
                 html.Label(
-                    "Year",
+                    "Year:",
                     className="text-base font-semibold text-gray-900",
                     htmlFor="year",
                 ),
@@ -102,13 +103,15 @@ app.layout = html.Div(
                     className="text-sm text-gray-500",
                 ),
                 dcc.Dropdown(df.Year.unique(), value=2005, id="input-year"),
-            ]
+            ],
+            className="mt-4",
         ),
         html.Div(
             [dcc.Graph(id="pie-plot"), dcc.Graph(id="bar-plot")],
             className="mt-10 grid max-w-xl grid-cols-1 gap-8 text-base leading-7 text-gray-700 lg:max-w-none lg:grid-cols-2",
         ),
-    ]
+    ],
+    className="flex flex-col items-center",
 )
 
 
