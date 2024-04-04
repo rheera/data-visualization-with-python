@@ -35,7 +35,14 @@ app.layout = html.Main(
                     "Which report would you like to display, yearly or recession?",
                     className="text-sm text-gray-500",
                 ),
-                dcc.Dropdown(["Yearly", "Recession"], "Yearly", id="input-report"),
+                dcc.Dropdown(
+                    options=[
+                        {"label": "Yearly Statistics", "value": "Yearly"},
+                        {"label": "Recession Period Statistics", "value": "Recession"},
+                    ],
+                    value="Yearly",
+                    id="input-report",
+                ),
             ],
             className="mt-4",
         ),
@@ -69,5 +76,81 @@ def disable_year(report_value):
         return False
 
 
+def recession_graphs():
+    vehicle_type_names = {
+        "Supperminicar": "Super Mini Car",
+        "Mediumfamilycar": "Medium Family Car",
+        "Smallfamiliycar": "Small Family Car",
+        "Sports": "Sports Car",
+        "Executivecar": "Executive Car",
+    }
+    label_names = {
+        "Automobile_Sales": "Average Automobile Sales",
+        "Vehicle_Type": "Vehicle Type",
+        "Advertising_Expenditure": "Advertising Expenditure",
+    }
+    fig_line = px.line(
+        df_rec[["Year", "Automobile_Sales"]].groupby("Year").mean().reset_index(),
+        x="Year",
+        y="Automobile_Sales",
+        title="Average Automobile Sales by Year",
+        color_discrete_sequence=["#C45A9A"],
+        labels=label_names,
+    )
+    fig_line.show()
+    bar_df = (
+        df_rec[["Vehicle_Type", "Automobile_Sales"]]
+        .groupby("Vehicle_Type")
+        .mean()
+        .reset_index()
+    )
+    bar_df["Vehicle_Type"] = bar_df["Vehicle_Type"].map(vehicle_type_names)
+    fig_bar_1 = px.bar(
+        bar_df,
+        x="Vehicle_Type",
+        y="Automobile_Sales",
+        title="Average Automobile Sales by Vehicle Type",
+        color_discrete_sequence=["#C45A9A"],
+        labels=label_names,
+    )
+    fig_bar_1.show()
+    pie_df = (
+        df_rec[["Vehicle_Type", "Advertising_Expenditure"]]
+        .groupby("Vehicle_Type")
+        .sum()
+        .reset_index()
+    )
+    pie_df["Vehicle_Type"] = pie_df["Vehicle_Type"].map(vehicle_type_names)
+    fig_pie = px.pie(
+        pie_df,
+        values="Advertising_Expenditure",
+        names="Vehicle_Type",
+        title="Sum of Advertising Expenditure by Vehicle Type",
+        labels=label_names,
+    )
+    fig_pie.show()
+
+
 if __name__ == "__main__":
     app.run_server()
+
+df_rec[["Year", "Automobile_Sales"]].groupby("Year").mean()
+df_rec[["Vehicle_Type", "Automobile_Sales"]].groupby("Vehicle_Type").mean()
+
+vehicle_type_names = {
+    "Supperminicar": "Super Mini Car",
+    "Mediumfamilycar": "Medium Family Car",
+    "Smallfamiliycar": "Small Family Car",
+    "Sports": "Sports Car",
+    "Executivecar": "Executive Car",
+}
+
+pie_df = (
+    df_rec[["Vehicle_Type", "Advertising_Expenditure"]]
+    .groupby("Vehicle_Type")
+    .sum()
+    .reset_index()
+)
+pie_df["Vehicle_Type"] = pie_df["Vehicle_Type"].map(vehicle_type_names)
+
+df["Vehicle_Type"].unique()
