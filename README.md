@@ -136,7 +136,7 @@ The dataset includes the following variables:
 The directors of XYZAutomobiles have requested a dashboard to be developed so they can drill into the data in more detail for specific years or by different categories. Our second task is to create a suitable dashboard and add user interactions so that the directors can select the data they want to review without the need to request new plots.
 
 - [x] TASK 2.1: Create a Dash application and give it a meaningful title.
-- [x] TASK 2.2:Add drop-down menus to your dashboard with appropriate titles and options.
+- [x] TASK 2.2: Add drop-down menus to our dashboard with appropriate titles and options.
 - [x] TASK 2.3: Add a division for output display with appropriate id and classname property
 - [x] TASK 2.4: Creating Callbacks; Define the callback function to update the input container based on the selected statistics and the output container.
 - [x] TASK 2.5: Create and display graphs for Recession Report Statistics.
