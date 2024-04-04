@@ -10,7 +10,7 @@ This is the final project for Course 8, _Python Project for Data Visualization_.
 
 For part one of this project, we are to create data visualizations. The objective of this part is to analyze and visualize the wildfire activities in Australia using the provided dataset. We will explore patterns and trends, and create visualizations to gain insights into the behavior of wildfires in different regions of Australia.
 
-### Dashboard to display charts based on selected Region and Year
+#### Dashboard to display charts based on selected Region and Year
 
 For the second part, we are creating and customizing dashboards. The objective of this part is to create dashboards to contain our plots and charts. We will create a dashboard wherein the user can select the **Region** and the **Year**. Based on the selection, the dashboard will display the following two charts:
 
@@ -34,6 +34,7 @@ For the final part, we are assuming the role of a data scientist at XYZAutomotiv
     - [Task 1 - Create visualizations using Matplotib, Seaborn & Folium](#task-1---create-visualizations-using-matplotib-seaborn--folium)
     - [Task 2 - Create a Dashboard using Plotly and Dash](#task-2---create-a-dashboard-using-plotly-and-dash)
 - [Stretch Goals](#stretch-goals)
+- [Dashboard Demo](#dashboard-demo)
 
 ## Data Description
 
