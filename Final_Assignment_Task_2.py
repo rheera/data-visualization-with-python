@@ -42,7 +42,11 @@ month_order = [
 ]
 
 external_scripts = [{"src": "https://cdn.tailwindcss.com"}]
-app = Dash(__name__, external_scripts=external_scripts)
+app = Dash(
+    __name__,
+    external_scripts=external_scripts,
+    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
+)
 # Clear the layout and do not display exception till callback gets executed
 app.config.suppress_callback_exceptions = True
 
@@ -86,10 +90,19 @@ app.layout = html.Main(
                     className="text-sm text-gray-500",
                 ),
                 dcc.Dropdown(
-                    df.Year.unique(), value=2005, id="input-year", disabled=True
+                    sorted(df.Year.unique()), value=2005, id="input-year", disabled=True
                 ),
             ],
             className="mt-4",
+        ),
+        html.Section(
+            [
+                dcc.Graph(id="plot-1"),
+                dcc.Graph(id="plot-2"),
+                dcc.Graph(id="plot-3"),
+                dcc.Graph(id="plot-4"),
+            ],
+            className="flex flex-wrap items-center justify-center",
         ),
     ],
     className="flex flex-col items-center",
@@ -104,13 +117,32 @@ def disable_year(report_value):
         return False
 
 
+@callback(
+    [
+        Output(component_id="plot-1", component_property="figure"),
+        Output(component_id="plot-2", component_property="figure"),
+        Output(component_id="plot-3", component_property="figure"),
+        Output(component_id="plot-4", component_property="figure"),
+    ],
+    [
+        Input(component_id="input-report", component_property="value"),
+        Input(component_id="input-year", component_property="value"),
+    ],
+)
+def display_graphs(report_value, entered_year):
+    if report_value == "Recession":
+        return recession_graphs()
+    else:
+        return year_graphs(entered_year)
+
+
 def recession_graphs():
     # Line Graph, Avg Sales by year
     fig_line = px.line(
         df_rec[["Year", "Automobile_Sales"]].groupby("Year").mean().reset_index(),
         x="Year",
         y="Automobile_Sales",
-        title="Average Automobile Sales by Year",
+        title="Average Automobile Sales by Year during Recession Periods",
         color_discrete_sequence=["#C45A9A"],
         labels=label_names,
     )
@@ -127,7 +159,7 @@ def recession_graphs():
         bar_df,
         x="Vehicle_Type",
         y="Automobile_Sales",
-        title="Average Automobile Sales by Vehicle Type",
+        title="Average Automobile Sales by Vehicle Type during Recession Periods",
         color_discrete_sequence=["#C45A9A"],
         labels=label_names,
     )
@@ -144,7 +176,7 @@ def recession_graphs():
         pie_df,
         values="Advertising_Expenditure",
         names="Vehicle_Type",
-        title="Sum of Advertising Expenditure by Vehicle Type",
+        title="Total Advertising Expenditure by Vehicle Type during Recession Periods",
         labels=label_names,
     )
     # fig_pie.show()
@@ -161,7 +193,7 @@ def recession_graphs():
         y="Automobile_Sales",
         color="Vehicle_Type",
         labels=label_names,
-        title="Automobile Sales by Vehicle Type Per Unemployment Rate",
+        title="Automobile Sales by Vehicle Type Per Unemployment Rate during Recession Periods",
     )
     # Change the car names to remove underscores in legend and on hover
     fig_bar_2.for_each_trace(
@@ -194,24 +226,28 @@ def year_graphs(entered_year):
         x="Month",
         y="Automobile_Sales",
         labels=label_names,
+        title=f"Total Automobile Sales per Month in {entered_year}",
         color_discrete_sequence=["#C45A9A"],
     )
     # fig_line_2.show()
     # Bar chart, Avg sales per month by vehicle type
-    fig_bar = px.bar(
-        df_year,
-        x="Month",
-        y="Automobile_Sales",
-        color="Vehicle_Type",
-        category_orders={"Month": month_order},
-        labels=label_names,
+    df_bar = (
+        df_year[["Vehicle_Type", "Automobile_Sales"]]
+        .groupby("Vehicle_Type")
+        .sum()
+        .reset_index()
     )
-    fig_bar.for_each_trace(
-        lambda t: t.update(
-            name=vehicle_type_names[t.name],
-            legendgroup=vehicle_type_names[t.name],
-            hovertemplate=t.hovertemplate.replace(t.name, vehicle_type_names[t.name]),
-        )
+    df_bar["Automobile_Sales"] = (
+        df_bar["Automobile_Sales"] / 12
+    )  # dividing by 12 to get monthly average
+    df_bar["Vehicle_Type"] = df_bar["Vehicle_Type"].map(vehicle_type_names)
+    fig_bar = px.bar(
+        df_bar,
+        x="Vehicle_Type",
+        y="Automobile_Sales",
+        labels=label_names,
+        title=f"Average Monthly Automobile Sales by Vehicle Type in {entered_year}",
+        color_discrete_sequence=["#C45A9A"],
     )
     # fig_bar.show()
     # Pie graph, total ad expense by vehicle type
@@ -223,11 +259,11 @@ def year_graphs(entered_year):
     )
     pie_df["Vehicle_Type"] = pie_df["Vehicle_Type"].map(vehicle_type_names)
     fig_pie = px.pie(
-        y_pie_df,
+        pie_df,
         values="Advertising_Expenditure",
         names="Vehicle_Type",
         labels=label_names,
-        title="Sum of Advertising Expenditure by Vehicle Type",
+        title=f"Total Advertising Expenditure by Vehicle Type in {entered_year}",
     )
     # fig_pie.show()
     return [fig_line, fig_line_2, fig_bar, fig_pie]
@@ -235,72 +271,3 @@ def year_graphs(entered_year):
 
 if __name__ == "__main__":
     app.run_server()
-
-df_rec[["Year", "Automobile_Sales"]].groupby("Year").mean()
-df_rec[["Vehicle_Type", "Automobile_Sales"]].groupby("Vehicle_Type").mean()
-
-
-pie_df = (
-    df_rec[["Vehicle_Type", "Advertising_Expenditure"]]
-    .groupby("Vehicle_Type")
-    .sum()
-    .reset_index()
-)
-pie_df["Vehicle_Type"] = pie_df["Vehicle_Type"].map(vehicle_type_names)
-
-bar2_df = (
-    df_rec[["unemployment_rate", "Vehicle_Type", "Automobile_Sales"]]
-    .groupby(["Vehicle_Type", "unemployment_rate"])
-    .sum()
-    .reset_index()
-)
-px.bar(bar2_df, x="unemployment_rate", y="Automobile_Sales", color="Vehicle_Type")
-df_rec.dtypes
-df["Vehicle_Type"].unique()
-
-
-df_line = df[["Year", "Automobile_Sales"]].groupby("Year").mean()
-px.line(df_line, y="Automobile_Sales")
-
-df_year = df[df["Year"] == 2002]
-px.line(
-    df_year,
-    x="Month",
-    y="Automobile_Sales",
-    labels=label_names,
-    color_discrete_sequence=["#C45A9A"],
-)
-
-
-df_bar = df_year[["Month", "Automobile_Sales", "Vehicle_Type"]]
-fig_bar = px.bar(
-    df_year,
-    x="Month",
-    y="Automobile_Sales",
-    color="Vehicle_Type",
-    category_orders={"Month": month_order},
-    labels=label_names,
-    title="Average Automobile Sales per Month by Vehicle Type",
-)
-fig_bar.for_each_trace(
-    lambda t: t.update(
-        name=vehicle_type_names[t.name],
-        legendgroup=vehicle_type_names[t.name],
-        hovertemplate=t.hovertemplate.replace(t.name, vehicle_type_names[t.name]),
-    )
-)
-
-y_pie_df = (
-    df_year[["Advertising_Expenditure", "Vehicle_Type"]]
-    .groupby("Vehicle_Type")
-    .sum()
-    .reset_index()
-)
-y_pie_df["Vehicle_Type"] = y_pie_df["Vehicle_Type"].map(vehicle_type_names)
-px.pie(
-    y_pie_df,
-    values="Advertising_Expenditure",
-    names="Vehicle_Type",
-    labels=label_names,
-    title="Sum of Advertising Expenditure by Vehicle Type",
-)
