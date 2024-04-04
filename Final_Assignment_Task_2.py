@@ -85,9 +85,10 @@ def recession_graphs():
         "Executivecar": "Executive Car",
     }
     label_names = {
-        "Automobile_Sales": "Average Automobile Sales",
+        "Automobile_Sales": "Automobile Sales",
         "Vehicle_Type": "Vehicle Type",
         "Advertising_Expenditure": "Advertising Expenditure",
+        "unemployment_rate": "Unemployment Rate",
     }
     fig_line = px.line(
         df_rec[["Year", "Automobile_Sales"]].groupby("Year").mean().reset_index(),
@@ -129,6 +130,28 @@ def recession_graphs():
         labels=label_names,
     )
     fig_pie.show()
+    bar2_df = (
+        df_rec[["unemployment_rate", "Vehicle_Type", "Automobile_Sales"]]
+        .groupby(["Vehicle_Type", "unemployment_rate"])
+        .sum()
+        .reset_index()
+    )
+    fig_bar_2 = px.bar(
+        bar2_df,
+        x="unemployment_rate",
+        y="Automobile_Sales",
+        color="Vehicle_Type",
+        labels=label_names,
+        title="Automobile Sales by Vehicle Type Per Unemployment Rate",
+    )
+    fig_bar_2.for_each_trace(
+        lambda t: t.update(
+            name=vehicle_type_names[t.name],
+            legendgroup=vehicle_type_names[t.name],
+            hovertemplate=t.hovertemplate.replace(t.name, vehicle_type_names[t.name]),
+        )
+    )
+    fig_bar_2.show()
 
 
 if __name__ == "__main__":
@@ -153,4 +176,12 @@ pie_df = (
 )
 pie_df["Vehicle_Type"] = pie_df["Vehicle_Type"].map(vehicle_type_names)
 
+bar2_df = (
+    df_rec[["unemployment_rate", "Vehicle_Type", "Automobile_Sales"]]
+    .groupby(["Vehicle_Type", "unemployment_rate"])
+    .sum()
+    .reset_index()
+)
+px.bar(bar2_df, x="unemployment_rate", y="Automobile_Sales", color="Vehicle_Type")
+df_rec.dtypes
 df["Vehicle_Type"].unique()
